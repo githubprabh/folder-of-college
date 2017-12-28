@@ -1,0 +1,39 @@
+#include<stdio.h>               // done
+void bubble(int *a, int *n)
+{
+	int pass,j;
+	int tmp;
+	bool xchange = true;
+	for(pass = 1 ; pass < *n && xchange == true ; pass++)
+	{
+		xchange = false;
+		for (j = 0; j < *n-pass ; j++)
+		{
+			if(a[j]>a[j+1])
+			{
+				tmp = a[j];
+				a[j]=a[j+1];
+				a[j+1]= tmp;
+				xchange = true;
+			}
+		}
+	}
+	printf("\nsorted\n");
+	for (int i=0 ; i<*n ; i++)
+	{
+		printf("\n%d",a[i]);
+	}	
+}
+main()
+{
+	int n;
+	// total numbers to be entered
+	printf("enter total no to be enetred and then numbers\n");
+	scanf("%d",&n);
+	int a[n];
+	for(int i=0 ; i<n ; i++)
+	{
+		scanf("%d",&a[i]);
+	}
+	bubble( a , &n);
+}
