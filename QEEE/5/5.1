@@ -1,0 +1,194 @@
+
+#include<stdio.h>
+#include<bits/stdc++.h>
+#include<stdlib.h>
+#include<fstream>
+
+typedef struct list1{
+	int reg_no;
+	int quiz_marks;
+	int asgn_marks;
+	int final_marks;
+	struct list1 *link;
+}node1;
+node1 *head1=NULL;
+
+typedef struct total_list{
+	int total_marks;
+	int reg_no;
+	struct total_list *link;
+}node2;
+node2 *head2=NULL;
+
+create()
+{
+	FILE *fp1; FILE *fp2; FILE *fp3; 
+	node1 *p,*q; p=q=head1;
+	fp1=fopen("quiz_marks.txt","r");
+	fp2=fopen("asgn_marks.txt","r");
+	fp3=fopen("final_marks.txt","r");
+	int reg_no1,reg_no2,reg_no3,quiz_marks,asgn_marks,final_marks;
+	
+	    
+	while((!feof(fp1)) && (!feof(fp2))&& (!feof(fp3))){
+	    fscanf(fp1,"%d",&reg_no1);
+	    fscanf(fp1,"%d",&quiz_marks);
+	    fscanf(fp2,"%d",&reg_no2);
+		fscanf(fp2,"%d",&asgn_marks);
+		fscanf(fp3,"%d",&reg_no3);
+		fscanf(fp3,"%d",&final_marks);
+	if(head1==NULL)
+	{
+//		printf("check");
+		p=(node1*)malloc(sizeof(node1));
+		p->reg_no=reg_no1;
+		p->quiz_marks=quiz_marks;
+		p->asgn_marks=asgn_marks;
+		p->final_marks=final_marks;
+		printf("\n%d %d %d %d" ,p->reg_no,p->quiz_marks,p->asgn_marks,p->final_marks);
+		q=p;
+		head1=p;
+		p->link=NULL;
+	}
+	else
+	{
+		p=(node1*)malloc(sizeof(node1));
+		p->reg_no=reg_no1;
+		p->quiz_marks=quiz_marks;
+		p->asgn_marks=asgn_marks;
+		p->final_marks=final_marks;
+		printf("\n%d %d %d %d" ,p->reg_no,p->quiz_marks,p->asgn_marks,p->final_marks);
+
+		q->link=p;
+		q=p;
+		p->link=NULL;
+	}
+	}
+}
+total_marks()
+{
+	node1 *p,*q; node2 *x,*y;
+	p=q=head1;  x=y=head2;
+	do
+	{
+		if(head2==NULL)
+		{	
+		x=(node2*)malloc(sizeof(node2));
+		x->total_marks = p->final_marks + p->quiz_marks + p->asgn_marks;
+//		printf("%d",x->total_marks);
+        x->reg_no = p->reg_no;
+		y=x;
+		head2=x;
+		x->link=NULL;
+		}
+		else
+		{
+		x=(node2*)malloc(sizeof(node2));
+		x->total_marks = p->final_marks + p->quiz_marks + p->asgn_marks;
+//		printf("%d",x->total_marks);
+        x->reg_no = p->reg_no ;
+        y->link=x;
+		y=x;
+		x->link=NULL;	
+		}
+		p=p->link;
+	}while(p->link!=NULL);
+	// for last entery
+	    x=(node2*)malloc(sizeof(node2));
+		x->total_marks = p->final_marks + p->quiz_marks + p->asgn_marks;
+//		printf("%d",x->total_marks);
+        x->reg_no = p->reg_no ;
+        y->link=x;
+		y=x;
+		x->link=NULL;
+	
+	node2 *z; z=head2;
+	printf(" \n\nSum of marks of students\n");
+	again2:
+	if(z->link!=NULL)
+	{
+		printf("\n%d  %d",z->reg_no,z->total_marks);
+		z=z->link;
+		goto again2;
+	}
+		printf("\n%d  %d",z->reg_no,z->total_marks);
+}
+
+compare()
+{
+	node2 *x , *y ;
+	x=y=head2; x=x->link; 
+	int min, max ; int temp1 , temp2; temp1= temp2 = y->reg_no;
+	max=min= y->total_marks;
+	while(x->link!=NULL)
+	{
+		if(max < x->total_marks)
+		{
+//			min=y->total_marks;
+			max=x->total_marks;
+			temp1=x->reg_no;
+			x=x->link;
+			y=y->link;
+		}
+		else
+		{
+			max=y->total_marks;
+			temp1=y->reg_no;
+//			min=x->total_marks;
+			x=x->link;
+			y=y->link;
+		}
+	}
+	if(max < x->total_marks)
+	{
+		max=x->total_marks;
+		temp1=x->reg_no;
+	}
+	while(x->link!=NULL)
+	{
+		if(min < x->total_marks)
+		{
+			min=y->total_marks;
+			temp2=y->reg_no;
+//			max=x->total_marks;
+			x=x->link;
+			y=y->link;
+		}
+		else
+		{
+//			max=y->total_marks;
+			min=x->total_marks;
+			temp2=x->reg_no;
+			x=x->link;
+			y=y->link;
+		}
+	}
+	if(min > x->total_marks)
+	{;
+		min=x->total_marks;
+		temp2=x->reg_no;
+	}
+	
+	printf("\nmaximum marks by %d %d",temp1,max);
+	printf("\nminimum marks by %d %d",temp2,min);
+}
+mean_sd()
+{
+	node2 *x,*y; int mean=0,  sd;
+	x=y=head2;
+	while(x->link!=NULL)
+	{
+        mean=mean+(x->total_marks/5);
+		x=x->link;
+	}
+	mean=mean+(x->total_marks/5);
+	
+	printf("\nMean of marks is  %d\n",mean);
+}
+main()
+{
+	create();
+	total_marks();
+	compare();
+	mean_sd();
+}
