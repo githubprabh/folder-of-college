@@ -1,0 +1,113 @@
+
+#include<stdio.h>
+#include<stdlib.h>
+#include<bits/stdc++.h>
+#include<conio.h>
+typedef struct course{
+	char QEEE01[100];
+	char fname[100];
+	char lname[100];
+	int total_contact_hours[100];      // i dont need char instead int but
+	int id[100];              // then down it gives error 
+	int stu_attend[100];        
+}node1;   // cannot convert 'int*' to 'char*' for argument '1' to 'char* fgets(char*, int, FILE*)'
+node1 *head1=NULL;
+
+int stu_id[100], stu_at[100];
+int total[100];
+void read()
+{
+	FILE *fp;
+	char qeee[10],fname[100],lname[100];
+	int i=0 , id , attend;
+	int total[100];
+	fp=fopen("attendence.txt","r");
+	if(!feof(fp))
+	{
+		fscanf(fp,"%s",qeee);
+		fscanf(fp,"%s",fname);
+		fscanf(fp,"%s",lname);
+		fscanf(fp,"%d",&total);
+	}
+	while(!feof(fp))
+	{
+		fscanf(fp,"%d",&id);
+		fscanf(fp,"%d",&attend);
+		stu_id[i]=id ; //printf("\n%d",id);
+		stu_at[i]=attend;
+		
+//		printf("\n%d %d",stu_id[i],stu_at[i]);
+		i++;
+	}
+}
+registration()
+{
+	int n , m;
+	printf("  Registration order listing");
+
+	for(int j=0 ; j<10 ;j++)
+	{
+	for(int i=0; i<5 ;i++)
+	{
+	if(stu_id[i]>stu_id[i+1])
+	{
+		//swap;
+		n=stu_id[i]; m = stu_at[i];
+		stu_id[i] = stu_id[i+1]; stu_at[i] = stu_at[i+1];
+		stu_id[i+1] = n ; stu_at[i+1] = m;
+	}
+	}
+	}
+	
+	printf("\n");
+	for(int i=0 ; i < 6 ; i++)
+	{
+		printf("\n%d %d" , stu_id[i], stu_at[i]);
+	}
+}
+attendence()
+{
+	{
+	int n , m;
+	printf("\n\n  Attendence descending order ");
+
+	for(int j=0 ; j<10 ;j++)
+	{
+	for(int i=0; i<5 ;i++)
+	{
+	if(stu_at[i]<stu_at[i+1])
+	{
+		//swap;
+		n=stu_at[i];             m = stu_id[i];
+		stu_at[i] = stu_at[i+1]; stu_id[i] = stu_id[i+1];
+		stu_at[i+1] = n ;        stu_id[i+1] = m;
+	}
+	}
+	}
+	
+	printf("\n");
+	for(int i=0 ; i < 6 ; i++)
+	{
+		printf("\n%d %d" , stu_id[i], stu_at[i]);
+	}
+}
+}
+at_short()
+{
+	printf("\n\n  Less than 80%% attendence\n");
+	for(int i=0;i<6;i++)
+	{
+		if(stu_at[i]<(.8*50))
+		{
+			printf("\n%d %d",stu_id[i],stu_at[i]);
+		}
+	}
+}
+
+main()
+{
+	read();
+	registration();
+	attendence();
+	at_short();
+}
