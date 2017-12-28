@@ -1,0 +1,144 @@
+
+#include<stdio.h>
+#include<bits/stdc++.h>
+
+typedef struct group{
+	char choice[4];
+	char fname[16];
+	char month[4];
+	int date;
+	int year;
+	char gender[2];
+	struct group *link; 
+}node;
+node *head=NULL;
+
+typedef struct group2{
+	char fname[16];
+	char month[4];
+	int date;
+	int year;
+	struct group2 *link; 
+}node2;
+node2 *head2=NULL;
+
+create_link()
+{
+    node *p,*q; 
+	node2 *x,*z;
+	FILE *fp;
+	fp=fopen("group.txt","r");
+    char choice[4];
+    
+    char fname[16] , month[4], gender[2];
+	int date , year;
+    if(!feof(fp))
+	{
+		fscanf(fp,"%s",choice);
+	}
+    for(int i=0;i<12;i++)  
+	{
+//		printf("\n%d",i);
+		if(!feof(fp))
+        {   	
+    	fscanf(fp,"%s",fname);
+    	fscanf(fp,"%s",month);
+    	fscanf(fp,"%d",&date);
+    	fscanf(fp,"%d",&year);
+    	fscanf(fp,"%s",gender);
+        if(head==NULL)
+        {
+        	p=(node*)malloc(sizeof(node));
+        	strcpy(p->fname,fname);
+		    strcpy(p->month,month);
+		    p->date=date;
+		    p->year=year;
+		    p->link=NULL;
+		    head = q= p;
+		    if(strcmp(p->month,choice)==0)
+		    {
+		    	x=(node2*)malloc(sizeof(node2));
+		    	strcpy(x->fname,p->fname);
+		    	x->date=p->date;
+		    	x->year=p->year;
+		    	
+		    	x->link=NULL;
+		    	head2 = z = x;
+				printf("\n%s %p",x->fname,head2);
+			}
+		}
+		else
+		{
+			//printf("\n%s %s",choice,p->month);
+			p=(node*)malloc(sizeof(node));
+        	strcpy(p->fname,fname);
+		    strcpy(p->month,month);
+		    p->date=date;
+		    p->year=year;
+		    q->link=p;
+		    q=p;
+		    
+            p->link=NULL;
+		    if(strcmp(p->month,choice)==0)
+		    {
+		    	x=(node2*)malloc(sizeof(node2));
+		    	strcpy(x->fname,p->fname);
+		    	x->date=p->date;
+		    	if(head2==NULL)
+		        head2=x;
+		    	x->year=p->year;
+		    	strcpy(x->month,p->month);
+		    	z->link=x;
+		    	z=x;
+				x->link=NULL;
+//		    	printf("\n%s",x->fname);
+			}
+		} 
+	    }
+	}   
+}
+
+sort()
+{
+	node2 *x,*y;
+	y=head2;int temp1,temp2;char tname[10];
+	x=y->link;
+	printf("eldest to youngest\n");
+	again:
+	if(x->year>y->year)
+	{
+		if(x->link!=NULL)
+		{
+			x=x->link;
+			y=x;
+		}
+	}
+	else  // swap
+	{
+		temp1=x->date;x->date=y->date;y->date=temp1;
+		temp2=x->year;x->year=y->year;y->year=temp2;
+		strcpy(tname,x->fname);strcpy(x->fname,y->fname);strcpy(y->fname,tname);
+//		printf("\n%d %d",y->date,x->date);
+	}
+	if(x->link!=NULL)
+	{
+		x=x->link;y=y->link;
+		goto again;
+	}
+	x=y=head2;
+	again2:
+	if(x->link!=NULL)
+	{
+		printf("\n%s__%s__%d__%d\n",x->fname,x->month,x->date,x->year);
+		x=x->link;
+		goto again2;
+	}
+	printf("\n%s__%s__%d__%d\n",x->fname,x->month,x->date,x->year);
+
+}
+main()
+{	
+	create_link();
+	sort();
+}
+
