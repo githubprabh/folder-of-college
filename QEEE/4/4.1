@@ -1,0 +1,197 @@
+ude<stdio.h>
+#include<bits/stdc++.h>
+
+typedef struct course{
+	int student_id;
+	int hours;
+	struct course *link;
+}node1;
+node1 *head1 = NULL;
+int total_hr;
+create()
+{
+	FILE *fp; node1 *p,*q;
+	fp=fopen("attendence.txt","r");
+	char course[7],fname[9],lname[7];
+	int student_id,hours;
+	if(!feof(fp))
+	{
+		fscanf(fp,"%7s %9s %7s %d",course,fname,lname,&total_hr);
+		printf("%7s %s %s %d",course,fname,lname,total_hr);
+	}
+	while(!feof(fp))
+	{
+		if(head1==NULL)
+		{
+			p=(node1*)malloc(sizeof(node1));
+			fscanf(fp,"%5d %3d",&student_id,&hours);
+			p->student_id = student_id;
+			p->hours = hours;
+			printf("\n%d %d",student_id,hours);
+			head1=p;
+			q=p;
+			p->link=NULL;
+		}
+		else
+		{
+			p=(node1*)malloc(sizeof(node1));
+			fscanf(fp,"%5d %3d",&student_id,&hours);
+			p->student_id = student_id;
+			p->hours = hours;
+			printf("\n%d %d",student_id,hours);
+			q->link=p;
+			q=p;
+			p->link=NULL;
+		}
+	}
+}
+
+sort()
+{
+	node1 *p,*q; int id_temp,hr_temp;
+	printf("\n\n  Registration order listing");
+	for(int i=0;i<10;i++)
+	{
+	p=q=head1;
+	p=q->link;
+		again:
+			if(p->student_id<q->student_id)
+		{
+			//swapp
+//			printf("\n%d",p->student_id);
+			id_temp = p->student_id;
+			p->student_id = q->student_id;
+			q->student_id = id_temp;
+			hr_temp = p->hours;
+			p->hours = q->hours;
+			q->hours = hr_temp;
+//			printf("\n%d",p->student_id);
+			if(p->link!=NULL)
+			{
+				p=p->link;
+			    q=q->link;
+			    goto again;
+			}
+		}
+		    else
+		{
+			if(p->link!=NULL)
+			{
+				p=p->link;
+			    q=q->link;
+			    goto again;
+			}
+			
+		}
+	}
+		
+		
+		printf("\n");
+		p=q=head1;
+	    p=q->link;
+	    again2:
+	    if(p->link!=NULL)
+	    {
+	    	printf("\n%d__%d",q->student_id,q->hours);
+	    	p=p->link;q=q->link;
+	    	goto again2;
+		}
+		printf("\n%d__%d",q->student_id,q->hours);
+		q=q->link;
+        printf("\n%d__%d",q->student_id,q->hours);
+}
+
+sort_again(){
+	node1 *p,*q; int id_temp,hr_temp;
+	printf("\n\n  Attendence descending order");
+	for(int i=0;i<10;i++)
+	{
+	p=q=head1;
+	p=q->link;
+		again:
+			if(p->hours>q->hours)
+		{
+			//swapp
+//			printf("\n%d",p->student_id);
+			id_temp = p->student_id;
+			p->student_id = q->student_id;
+			q->student_id = id_temp;
+			hr_temp = p->hours;
+			p->hours = q->hours;
+			q->hours = hr_temp;
+//			printf("\n%d",p->student_id);
+			if(p->link!=NULL)
+			{
+				p=p->link;
+			    q=q->link;
+			    goto again;
+			}
+		}
+		    else
+		{
+			if(p->link!=NULL)
+			{
+				p=p->link;
+			    q=q->link;
+			    goto again;
+			}
+			
+		}
+	}
+		
+		
+		printf("\n");
+		p=q=head1;
+	    p=q->link;
+	    again2:
+	    if(p->link!=NULL)
+	    {
+	    	printf("\n%d__%d",q->student_id,q->hours);
+	    	p=p->link;q=q->link;
+	    	goto again2;
+		}
+		printf("\n%d__%d",q->student_id,q->hours);
+		q=q->link;
+        printf("\n%d__%d",q->student_id,q->hours);
+}
+att_short(){
+	printf("\n\n  Less 80%% attendence\n");
+	node1 *p,*q;
+	p=q=head1;
+	int temp;
+	temp=(.8*total_hr);
+	for(int i=0;i<5;i++){
+		
+	again4:
+	if(p->link!=NULL)
+	{
+		if(q->hours<temp)
+		{
+			printf("\n%d__%d",q->student_id,q->hours);
+			p=p->link;
+			q=q->link;
+			goto again4;
+		}
+		else
+		{
+			p=p->link;
+			q=q->link;
+			goto again4;
+		}
+	}
+	
+	}
+	if(q->hours<temp){
+		    printf("\n%d__%d",q->student_id,q->hours);
+			p=p->link;
+			q=q->link;
+	    }
+	
+}
+main()
+{
+	create();
+	sort();
+	sort_again();
+	att_short();
+}
